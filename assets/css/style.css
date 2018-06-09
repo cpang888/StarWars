@@ -1,0 +1,57 @@
+
+ body {
+     width: 100%;
+     height: 800px;
+ }
+
+ table { 
+   border-width: 2px;
+  border-color: black;
+  border-style: solid; 
+ }
+
+ .temptable { 
+  grid-area: char;
+}
+
+ #crystals, #enemies {
+   display: grid;
+   grid-template-areas: 'char char char char';
+ }
+
+ .starWarsChar {
+  width: 200px;
+  height: 200px;
+  padding: 25px;
+  background-color: red;
+ }
+
+ /* Centered text */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+ .bg {
+    /* The image used */
+    background-image: url("../images/olympics.PNG");
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+ }
+ 
+  #right {
+    letter-spacing: 3px;
+  }
+
+  .wrong { 
+      text-transform: uppercase;
+      font-size: 50px;
+  }
