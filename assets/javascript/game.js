@@ -1,4 +1,5 @@
 
+      // create the character array
       var characters = [
         {name: "Obi-Wan Kenobi", image: "0.PNG", points: 120, attackPower: 8, isChar: false, isEnemies: false, isDefender: false},
         {name: "Luke Skywalker", image: "1.PNG", points: 100, attackPower: 5, isChar: false, isEnemies: false, isDefender: false},
@@ -6,28 +7,34 @@
         {name: "Darth Maul", image: "3.PNG", points: 180, attackPower: 25, isChar: false, isEnemies: false, isDefender: false}
       ];
       
+      // boolean to keep track of the character is the selected character and defender
       var bChar = false;
       var bDefender = false;
 
+      // reset all var and panels
       function reset() {
-        
         
       }
 
+      // populate the defender panel
       function populateDefenderPanel() {
+          // first empty the panel
           $("#defender").empty();
+          // call function to re-populate the enemies panel
           populateEnemeriesPanel();
-
+          // populate the defender panel
           for (var i = 0; i < characters.length; i++) {
         
             if(characters[i].isDefender) {
+              // create the table which contains the character name, picture and points
               createTable(characters[i], "#defender");
             }
-
           }
-
       } 
 
+      // dynamically create table which contains the character name, picture and points etc...
+      // char: is one of the object in characters[]
+      // elementID: the id of the panel in HTML
       function createTable(char, elementId) {
           var container = $('#my-container'),
           temptable = $('<table>');
@@ -47,7 +54,7 @@
           temp.attr("isDefender", char.isDefender);
           temp.addClass("starWarsChar");
 
-          // populate picture border color
+          // populate picture border color based on the flag
           if(char.isEnemies)
           temp.addClass("enemiesBkgColor");
           if(char.isDefender)
@@ -71,16 +78,17 @@
           for (var i = 0; i < characters.length; i++) {
             
             if(characters[i].isEnemies) {
-
                 createTable(characters[i], "#enemies");
 
                 var enemiesFlag = characters[i].isEnemies;
-
+                // handle onClick event
                 $("#enemies").on("click", ".starWarsChar", function() {
 
+                  // if defender character has been selected, return
                   if(bDefender) return;
 
                   if(enemiesFlag) {
+                    // populate the flags isDefender and isEnemies 
                     for(var i=0; i<characters.length; i++ ) {
                       if($(this).attr("name") == characters[i].name) {
                         console.log("match " + $(this).attr("name"));
@@ -91,9 +99,8 @@
                       console.log(characters);
                     };
                   }
-
+                  // players selects a defender, populate the panel
                   populateDefenderPanel();
-
                 });
 
             }
@@ -106,7 +113,7 @@
 
         for (var i = 0; i < characters.length; i++) {
           if(!bChar) {
-          
+            // this is the initial scenario
             createTable(characters[i], "#crystals");
 
             $(crystals).on("click", ".starWarsChar", function() {
@@ -117,8 +124,6 @@
               if($(this).attr("isEnemeries") == true) {
                 populateEnemeriesPanel();
               }
-
-
             });
           } else {
             if(characters[i].isChar) {
@@ -132,7 +137,6 @@
                 if($(this).attr("isEnemeries") == true) {
                   populateEnemeriesPanel();
                 }
-
               });
             }
           }
@@ -142,7 +146,6 @@
       var games = {
           
           start: function () {
-
             reset();
 
             var crystals = $("#crystals");
@@ -180,8 +183,6 @@
       };
 
       $(document).ready(function() {
-      
           games.start();
-
       });
 
