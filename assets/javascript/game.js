@@ -21,6 +21,15 @@
         $("#restartBtn").hide();
         $("#youAttack").text("");
         $("#defenderAttack").text("");
+        bChar = false;
+        bDefender = false;
+        $("#enemies").empty();
+        $("#defender").empty();
+        for (var i = 0; i < characters.length; i++) {
+            characters[i].isChar = false;
+            characters[i].isEnemies = false;
+            characters[i].isDefender = false;
+        }
       }
 
       // populate the defender panel
@@ -155,6 +164,9 @@
           
           restart: function () {
             reset();
+            games.start();
+            selectedChar.isChar = false;
+            selectedDefender.isDefender = false;
           },
           attack: function () {
             if(selectedChar.points > 0) {
@@ -175,6 +187,15 @@
               $("#youAttack").text("You been defeated... GAME OVER!!!");
               $("#defenderAttack").text("");
               $("#restartBtn").show();
+              
+            }
+            if(selectedDefender.points < 0) {
+              $("#youAttack").text("You have defeated " + selectedDefender.name + ", you can choose to fight anothers enemy.");
+              $("#defenderAttack").text("");
+              $("#defender").empty();
+              bDefender = false;
+              selectedDefender.isDefender = false;
+              console.log(characters);
             }
           },
 
