@@ -10,10 +10,17 @@
       // boolean to keep track of the character is the selected character and defender
       var bChar = false;
       var bDefender = false;
+      var selectedChar;
+      var selectedDefender;
+      // var selectedCharPoints;
+      var currentAttackPower = 0;
+      // var selectedDefenderPoints;
 
       // reset all var and panels
       function reset() {
-        
+        $("#restartBtn").hide();
+        $("#youAttack").text("");
+        $("#defenderAttack").text("");
       }
 
       // populate the defender panel
@@ -28,6 +35,8 @@
             if(characters[i].isDefender) {
               // create the table which contains the character name, picture and points
               createTable(characters[i], "#defender");
+              selectedDefender = characters[i];
+              selectedCharPoints = characters[i].points;
             }
           }
       } 
@@ -56,19 +65,29 @@
 
           // populate picture border color based on the flag
           if(char.isEnemies)
-          temp.addClass("enemiesBkgColor");
-          if(char.isDefender)
-            temp.addClass("defenderBkgColor");
-          if(char.isChar)
-            temp.addClass("charBkgColor");
-
+            temptable.addClass("enemiesBkgColor");
+          // if(char.isDefender)
+          //   temptable.addClass("defenderBkgColor");
+          // if(char.isChar) {
+          //   temptable.addClass("charBkgColor");
+          // }
           tr2.append(temp);
           temptable.append(tr2);
 
           var tr3 = $('<tr>');
           tr3.append('<td>' + char.points + '</td>');
+          if(char.isChar) {
+            temptable.addClass("charBkgColor");
+            tr3.addClass("charPoints");
+            currentAttackPower = char.attackPower;
+          }
+          if(char.isDefender) {
+            temptable.addClass("defenderBkgColor");
+            tr3.addClass("defenderPoints");
+          }
+            
           temptable.append(tr3);
-
+          
           $(elementId).append(temptable);
       }
 
@@ -112,9 +131,11 @@
         $("#crystals").empty();
 
         for (var i = 0; i < characters.length; i++) {
-          if(!bChar) {
-            // this is the initial scenario
+          if(!bChar || characters[i].isChar) {
+            // this is the initial scenario OR when user selects the 
+            // the character
             createTable(characters[i], "#crystals");
+            selectedChar = characters[i];
 
             $(crystals).on("click", ".starWarsChar", function() {
 
@@ -125,26 +146,38 @@
                 populateEnemeriesPanel();
               }
             });
-          } else {
-            if(characters[i].isChar) {
-              createTable(characters[i], "#crystals");
-
-              $(crystals).on("click", ".starWarsChar", function() {
-
-                if($(this).attr("isDefender") == true) {
-                  populateDefenderPanel();
-                }
-                if($(this).attr("isEnemeries") == true) {
-                  populateEnemeriesPanel();
-                }
-              });
-            }
           }
+          
         }
       }
    
       var games = {
           
+          restart: function () {
+            reset();
+          },
+          attack: function () {
+            if(selectedChar.points > 0) {
+              console.log("selectedChar name: " + selectedChar.name);
+              
+              selectedChar.points = selectedChar.points - selectedDefender.attackPower;
+              selectedDefender.points = selectedDefender.points - selectedChar.attackPower;
+
+              $(".charPoints").html("<div>" + selectedChar.points + "</div>");
+              $(".defenderPoints").html("<div>" + selectedDefender.points + "</div>");
+              console.log("selectedChar points: " + selectedChar.points);
+              console.log("selectedChar points: " + selectedDefender.points);
+            
+              $("#youAttack").text("You attacked " + selectedChar.name + " for " + selectedChar.attackPower + " damage.");
+              $("#defenderAttack").text(selectedDefender.name + " attacked you back for " + selectedDefender.attackPower + " damage.");
+              selectedChar.attackPower = selectedChar.attackPower + currentAttackPower;
+            } else {
+              $("#youAttack").text("You been defeated... GAME OVER!!!");
+              $("#defenderAttack").text("");
+              $("#restartBtn").show();
+            }
+          },
+
           start: function () {
             reset();
 
@@ -184,5 +217,7 @@
 
       $(document).ready(function() {
           games.start();
+          $("#attackBtn").click(games.attack);
+          $("#restartBtn").click(games.restart);
       });
 

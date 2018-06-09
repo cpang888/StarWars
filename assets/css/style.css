@@ -29,19 +29,24 @@
 
  .charBkgColor {
   background-color: white;
+  border-color: green;
+  text-align: center;
  }
  .enemiesBkgColor {
   background-color: red;
+  text-align: center;
  }
  .defenderBkgColor {
   background-color: black;
+  color: white;
+  text-align: center;
  }
 
  .starWarsChar {
   width: 150px;
   height: 100px;
   padding: 5px;
-
+  text-align: center;
  }
 
  /* Centered text */
